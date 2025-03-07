@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Importo le funzioni del controller
-const { index, destroy, show } = require('../controllers/controllerPost');
+const { index, destroy, show } = require('../controllers/controllerPost.js');
 
 
 // Definisco le rotte

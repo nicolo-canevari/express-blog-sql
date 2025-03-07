@@ -7,10 +7,10 @@ import connection from '../data/db.js';
 // Funzione per visualizzare tutti i "posts"
 function index(req, res) {
 
-    // query da lanciare
+    // Query da lanciare
     const sql = 'SELECT * FROM posts'
 
-    // eseguo la query
+    // Eseguo la query
     connection.query(sql, (err, results) => {
 
         if (err) {
@@ -39,6 +39,7 @@ function destroy(req, res) {
     // Query per eliminare il post
     const sql = 'DELETE FROM posts WHERE id = ?';
 
+    // Eseguo la query
     connection.query(sql, [id], (err, results) => {
 
         if (err) {
@@ -61,15 +62,28 @@ function destroy(req, res) {
 
 }
 
-// Funzione per visualizzare un post specifico
+// Funzione per visualizzare un post con i relativi tag
 function show(req, res) {
 
-    // Ottieni l'id del post dalla richiesta
+    // Ottiengo l'id del post dalla richiesta
     const { id } = req.params;
 
     // Query per recuperare il post specifico
-    const sql = 'SELECT * FROM posts WHERE id = ?';
+    // const sql = 'SELECT * FROM posts WHERE id = ?';
 
+    // Query per recuperare il post con i tag associati
+    const sql = `
+    SELECT p.id, p.title, p.content, p.image, 
+    GROUP_CONCAT(t.label) AS tags
+    FROM posts p
+    LEFT JOIN post_tag pt ON p.id = pt.post_id
+    LEFT JOIN tags t ON pt.tag_id = t.id
+    WHERE p.id = ?
+    GROUP BY p.id;
+    `;
+
+
+    // Eseguo la query
     connection.query(sql, [id], (err, results) => {
 
         if (err) {
@@ -85,8 +99,14 @@ function show(req, res) {
 
         }
 
+        // Restituisco il post con i tag come array
+        const post = results[0];
+        post.tags = post.tags ? post.tags.split(',') : [];
+
+        res.json(post);
+
         // Rispondi con il post trovato in formato JSON
-        res.json(results[0]);
+        // res.json(results[0]);
 
     });
 
