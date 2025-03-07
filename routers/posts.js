@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Importo le funzioni del controller
-const { index } = require('../controllers/controllerPost');
+const { index, destroy } = require('../controllers/controllerPost');
 
 
 // Definisco le rotte
@@ -20,7 +20,7 @@ router.get('/', index);
 // router.put('/:id', update);
 
 // Destroy: Cancella un post tramite id
-// router.delete('/:id', destroy);
+router.delete('/:id', destroy);
 
 // esportazione del router
 module.exports = router;

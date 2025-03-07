@@ -1,8 +1,10 @@
 // importo il file di connessione al database
 import connection from '../data/db.js';
 
-// ROTTE
 
+// ROTTE=
+
+// Funzione per visualizzare tutti i "posts"
 function index(req, res) {
 
     // query da lanciare
@@ -28,5 +30,36 @@ function index(req, res) {
 
 }
 
-// esporto tutto
-export { index };
+// Funzione per eliminare un "post"
+function destroy(req, res) {
+
+    // Ottengo l'id del post da eliminare
+    const { id } = req.params;
+
+    // Query per eliminare il post
+    const sql = 'DELETE FROM posts WHERE id = ?';
+
+    connection.query(sql, [id], (err, results) => {
+
+        if (err) {
+
+            return res.status(500).json({ error: 'Database query failed' });
+
+        }
+
+        // Se il post non esiste, restituisci un errore
+        if (results.affectedRows === 0) {
+
+            return res.status(404).json({ error: 'Post not found' });
+
+        }
+
+        // Rispondi con un codice 204 (No Content) in caso di successo
+        res.status(204).send();
+
+    });
+
+}
+
+// Esporto tutto
+export { index, destroy };
