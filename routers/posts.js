@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Importo le funzioni del controller
-const { index, destroy } = require('../controllers/controllerPost');
+const { index, destroy, show } = require('../controllers/controllerPost');
 
 
 // Definisco le rotte
@@ -11,7 +11,7 @@ const { index, destroy } = require('../controllers/controllerPost');
 router.get('/', index);
 
 // Show: Visualizza un post tramite id
-// router.get('/:id', show);
+router.get('/:id', show);
 
 // Store: Crea un nuovo post
 // router.post('/', store);

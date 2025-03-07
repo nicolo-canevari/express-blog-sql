@@ -8,7 +8,7 @@ const app = express();
 const port = 3000;
 
 
-// importo il router dei post
+// Importo il router dei post
 const postRouter = require('./routers/posts');
 
 
@@ -19,7 +19,7 @@ app.use(cors({
 
 }));
 
-// middleware per gestire le richieste JSON
+// Middleware per gestire le richieste JSON
 app.use(express.json());
 
 // Gestisco la rotta principale
@@ -51,7 +51,7 @@ app.listen(port, () => {
 });
 
 // gestione dei file statici della cartella 'public'
-// app.use(express.static('public'));
+app.use(express.static('public'));
 
 
 

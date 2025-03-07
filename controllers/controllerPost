@@ -2,7 +2,7 @@
 import connection from '../data/db.js';
 
 
-// ROTTE=
+// ROTTE (endpoints) =
 
 // Funzione per visualizzare tutti i "posts"
 function index(req, res) {
@@ -61,5 +61,36 @@ function destroy(req, res) {
 
 }
 
+// Funzione per visualizzare un post specifico
+function show(req, res) {
+
+    // Ottieni l'id del post dalla richiesta
+    const { id } = req.params;
+
+    // Query per recuperare il post specifico
+    const sql = 'SELECT * FROM posts WHERE id = ?';
+
+    connection.query(sql, [id], (err, results) => {
+
+        if (err) {
+
+            return res.status(500).json({ error: 'Database query failed' });
+
+        }
+
+        // Se il post non esiste, restituisci un errore
+        if (results.length === 0) {
+
+            return res.status(404).json({ error: 'Post not found' });
+
+        }
+
+        // Rispondi con il post trovato in formato JSON
+        res.json(results[0]);
+
+    });
+
+}
+
 // Esporto tutto
-export { index, destroy };
+export { index, destroy, show };
